@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/2988845af7.js"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+  integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+  crossorigin=""></script>
+    <title>Weather App</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 navItem">
+                <nav class="navbar navbar-light bg-light">
+                    <a href="/users/logout" class="btn btn-outline-warning mb-2">Logout</a>
+                    <h6>Welcome <%= user.username %></h6>
+                </nav>
+            </div>
+
+            <div class="col-12 offset-lg-6 col-lg-6">
+                <nav class="navbar navbar-cities">
+                    <form class="form-inline" id="form-city" action="/add-city" method="POST">
+                        <div>
+                        <span class="mr-1" id="city">Ville</span>
+                    <input id="search" class="form-control mr-sm-2" type="search" placeholder="Paris, Lyon.." aria-label="search" name="city">
+                </div>
+                    <button id="btn-register" class="btn btn-warning my-2 my-sm-0" type="submit">Enregistrer</button>
+                    </form>
+                    <form action="/refresh-city" method="post">
+                        <button href="/refresh-city" id="btn-refresh" class="btn btn-warning my-2 my-sm-0" type="submit"><i class="fas fa-redo-alt"></i></button>
+                    </form>
+                </nav>
+            </div>
+            
+            <div class="col-12 col-lg-6">
+                <div id="worldmap"></div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <% 
+                for(let i = 0; i < data.length; i++) { %>
+                    <div class="cities" class="card w-100" data-lon="<%= data[i].lon %>" data-lat="<%= data[i].lat %>" data-name="<%= data[i].name %>">
+                        <div class="card-body form-inline">
+                            <div class="col-3">
+                                <h5 class="card-title" id="city-name"><%= data[i].name %></h5>
+                            </div>
+                            <div class="col-8">
+                                <h6>
+                                    <img src="<%= data[i].img %>" width="15%">
+                                    <%= data[i].weather %>
+                                    <span class="badge badge-warning"><%= data[i].min %>°C</span>
+                                    <span class="badge badge-secondary"><%= data[i].max %>°C</span>
+                                </h6>
+                            </div>
+                            <div class="col-1">
+                                <form action="/delete-city" method="POST">
+                                    <input type="hidden" name="id" value="<%= data[i]._id%>">
+                                    <button type="submit" id="btn-delete">
+                                        <i id="cross" class="far fa-times-circle"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <%}%>
+            </div>
+
+        </div>
+    </div>
+    <script src="/javascripts/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>    
+</body>
+</html>
